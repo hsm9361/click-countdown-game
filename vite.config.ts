@@ -4,6 +4,7 @@ const envPort = process.env.PORT
 const port = envPort !== undefined ? Number(envPort) : 5173
 
 export default defineConfig({
+  base: '/click-countdown-game/',
   server: {
     port,
     strictPort: true,
