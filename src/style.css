@@ -1,0 +1,333 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #1a1a2e;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #e0e0e0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#target-area {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#target-area .target-btn {
+  pointer-events: auto;
+}
+
+#timer-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background-color: #2d2d4e;
+  z-index: 10;
+}
+
+#timer-fill {
+  height: 100%;
+  width: 100%;
+  background-color: #4caf50;
+  transition: width 50ms ease-out, background-color 150ms ease;
+  will-change: width;
+}
+
+#score {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  z-index: 10;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.target-btn {
+  position: absolute;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  line-height: 1;
+  text-align: center;
+  transition: transform 0.1s ease;
+  padding: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .target-btn:hover {
+    transform: scale(1.15);
+  }
+}
+
+.target-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.target-btn.is-multi {
+  filter: drop-shadow(0 0 10px rgba(255, 87, 34, 0.55));
+}
+
+.target-btn.is-pulsing {
+  animation: target-pulse 180ms ease-out;
+  transform-origin: center center;
+}
+
+@keyframes target-pulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(255, 87, 34, 0.55)) brightness(1);
+  }
+  50% {
+    transform: scale(1.25);
+    filter: drop-shadow(0 0 16px rgba(255, 193, 7, 0.9)) brightness(1.4);
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(255, 87, 34, 0.55)) brightness(1);
+  }
+}
+
+.click-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background-color: #ff5722;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  font-family: system-ui, sans-serif;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.target-btn.is-popping {
+  pointer-events: none;
+  animation: target-pop 280ms ease-out forwards;
+  transform-origin: center center;
+}
+
+.target-btn.is-popping .click-badge {
+  display: none;
+}
+
+@keyframes target-pop {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  40% {
+    transform: scale(1.5);
+    opacity: 1;
+    filter: brightness(1.6) drop-shadow(0 0 12px rgba(255, 235, 59, 0.9));
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+    filter: brightness(1.2);
+  }
+}
+
+.reaction-text {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow:
+    0 0 6px rgba(0, 0, 0, 0.8),
+    0 0 14px rgba(76, 175, 80, 0.5);
+  pointer-events: none;
+  white-space: nowrap;
+  animation: reaction-rise 900ms ease-out forwards;
+  z-index: 5;
+  will-change: transform, opacity;
+}
+
+@keyframes reaction-rise {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0;
+  }
+  25% {
+    transform: translate(-50%, -100%) scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -200%) scale(1);
+    opacity: 0;
+  }
+}
+
+#gameover-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 100;
+}
+
+#gameover-panel {
+  background-color: #ffffff;
+  color: #1a1a2e;
+  border-radius: 16px;
+  padding: 40px 48px;
+  text-align: center;
+  min-width: 280px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+#gameover-panel h2 {
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: #1a1a2e;
+}
+
+#gameover-panel .score-label {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+#gameover-panel .score-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 16px;
+}
+
+#gameover-panel .highscore-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #444;
+}
+
+#gameover-panel .avg-row {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 28px;
+}
+
+#gameover-panel .new-badge {
+  background-color: #ff5722;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+}
+
+#restart-btn {
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 14px 36px;
+  background-color: #3f51b5;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#restart-btn:hover {
+  filter: brightness(1.15);
+}
+
+#restart-btn:focus-visible {
+  outline: 2px solid #3f51b5;
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  #score {
+    font-size: 1.1rem;
+    top: 10px;
+    right: 12px;
+  }
+
+  #timer-bar {
+    height: 6px;
+  }
+
+  #gameover-panel {
+    min-width: 0;
+    max-width: calc(100vw - 32px);
+    padding: 28px 24px;
+    border-radius: 14px;
+  }
+
+  #gameover-panel h2 {
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+  }
+
+  #gameover-panel .score-value {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  #gameover-panel .highscore-row {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+
+  #gameover-panel .avg-row {
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+  }
+
+  #restart-btn {
+    font-size: 1rem;
+    padding: 12px 28px;
+  }
+
+  .reaction-text {
+    font-size: 1.1rem;
+  }
+}
